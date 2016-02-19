@@ -1,3 +1,9 @@
 <resources>
+    <!-- App Credentials-->
     <string name="app_name">Cryptick</string>
+
+    <!-- Login Strings-->
+    <string name="hint_enter_email">Enter E-mail</string>
+    <string name="hint_enter_password">Enter Password</string>
+
 </resources>
