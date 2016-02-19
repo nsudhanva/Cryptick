@@ -5,5 +5,8 @@
     <!-- Login Strings-->
     <string name="hint_enter_email">Enter E-mail</string>
     <string name="hint_enter_password">Enter Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="dont_account">Dont have an account?</string>
+    <string name="sign_up"><u>Sign Up</u></string>
 
 </resources>

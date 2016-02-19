@@ -1,8 +1,10 @@
 package sudhanva.narayana.cryptick.login;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.TextView;
 
 import sudhanva.narayana.cryptick.R;
 
@@ -10,9 +12,20 @@ import sudhanva.narayana.cryptick.R;
  * Created by nsudh on 19-02-2016.
  */
 public class LoginActivity extends AppCompatActivity {
+
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setTheme(android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen);
         setContentView(R.layout.activity_login);
+
+        TextView textView = (TextView)findViewById(R.id.signUpTextView);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

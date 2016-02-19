@@ -1,32 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/scrollView"
+    android:fillViewport="false"
     android:background="@color/indigo_light">
 
-
-    <EditText
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:layout_gravity="center_horizontal" />
+        android:background="@color/indigo_light"
+        android:padding="@dimen/margin_normal">
 
-    <EditText
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/app_name"
+        android:id="@+id/imageView"
+        android:src="@drawable/ic_cast_dark"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/margin_small" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/editText2"
-        android:layout_gravity="center_horizontal" />
+        android:layout_marginBottom="@dimen/margin_small">
+
+        <EditText
+            android:id="@+id/input_email"
+            android:textSize="@dimen/edit_text_text_size"
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="@string/hint_enter_email"
+            android:padding="@dimen/edit_text_padding" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_small">
+
+        <EditText
+            android:id="@+id/input_password"
+            android:textSize="@dimen/edit_text_text_size"
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="@string/hint_enter_password"
+            android:padding="@dimen/edit_text_padding" />
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
+        android:textColor="@color/white"
+        android:text="@string/sign_in"
+        android:id="@+id/signInButton"
+        android:background="@color/indigo_dark"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/margin_small" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/login_with_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/margin_small" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/dont_account"
+        android:id="@+id/dontAccountTextView"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/margin_small" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/sign_up"
+        android:id="@+id/signUpTextView"
+        android:textColor="@color/indigo_dark"
+        android:textStyle="bold"
         android:layout_gravity="center_horizontal" />
-</LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
