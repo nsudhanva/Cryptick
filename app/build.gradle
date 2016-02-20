@@ -43,7 +43,7 @@ dependencies {
     compile 'com.firebaseui:firebase-ui:0.2.2'
 
     //Adding Google Play Services
-    compile 'com.google.android.gms:play-services:8.4.0'
+    //compile 'com.google.android.gms:play-services:8.4.0'
 
     //Adding Google Sign In API
     compile 'com.google.android.gms:play-services-auth:8.4.0'

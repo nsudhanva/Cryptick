@@ -16,11 +16,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen);
         setContentView(R.layout.activity_login);
+        TextView textViewX = (TextView) findViewById(R.id.signUpTextView);
 
-        TextView textView = (TextView)findViewById(R.id.signUpTextView);
-        textView.setOnClickListener(new View.OnClickListener() {
+        textViewX.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);

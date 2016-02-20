@@ -12,7 +12,7 @@
     <dimen name="edit_text_padding_land">6dp</dimen>
     <dimen name="lists_title_bottom_margin">13dp</dimen>
     <dimen name="edit_text_padding">10dp</dimen>
-    <dimen name="margin_small">20dp</dimen>
+    <dimen name="margin_small">25dp</dimen>
     <dimen name="btn_shopping_height">30dp</dimen>
     <dimen name="input_field_height_land">36dp</dimen>
     <dimen name="margin_normal">37dp</dimen>

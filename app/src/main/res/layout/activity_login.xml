@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/scrollView"
-    android:fillViewport="false"
-    android:background="@color/indigo_light">
+    android:background="@color/indigo_light"
+    android:fillViewport="false">
 
     <LinearLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/indigo_light"
+        android:orientation="vertical"
         android:padding="@dimen/margin_normal">
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:contentDescription="@string/app_name"
-        android:id="@+id/imageView"
-        android:src="@drawable/ic_cast_dark"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/margin_small" />
+        android:layout_marginBottom="@dimen/margin_small"
+        android:contentDescription="@string/app_name"
+        android:src="@android:drawable/sym_def_app_icon" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_email"
@@ -32,13 +33,13 @@
 
         <EditText
             android:id="@+id/input_email"
-            android:textSize="@dimen/edit_text_text_size"
-            android:background="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
+            android:background="@android:color/white"
             android:hint="@string/hint_enter_email"
-            android:padding="@dimen/edit_text_padding" />
+            android:inputType="textEmailAddress"
+            android:padding="@dimen/edit_text_padding"
+            android:textSize="@dimen/edit_text_text_size" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -49,24 +50,24 @@
 
         <EditText
             android:id="@+id/input_password"
-            android:textSize="@dimen/edit_text_text_size"
-            android:background="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
+            android:background="@android:color/white"
             android:hint="@string/hint_enter_password"
-            android:padding="@dimen/edit_text_padding" />
+            android:inputType="textPassword"
+            android:padding="@dimen/edit_text_padding"
+            android:textSize="@dimen/edit_text_text_size" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
+        android:id="@+id/signInButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="@string/sign_in"
-        android:id="@+id/signInButton"
-        android:background="@color/indigo_dark"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/margin_small" />
+        android:layout_marginBottom="@dimen/margin_small"
+        android:background="@color/indigo_dark"
+        android:text="@string/sign_in"
+        android:textColor="@color/white" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/login_with_google"
@@ -76,23 +77,23 @@
         android:layout_marginBottom="@dimen/margin_small" />
 
     <TextView
+        android:id="@+id/dontAccountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/dont_account"
-        android:id="@+id/dontAccountTextView"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/margin_small" />
+        android:layout_marginBottom="@dimen/margin_small"
+        android:text="@string/dont_account"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
+        android:id="@+id/signUpTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_gravity="center_horizontal"
         android:text="@string/sign_up"
-        android:id="@+id/signUpTextView"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/indigo_dark"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal" />
+        android:textStyle="bold" />
 
     </LinearLayout>
 </ScrollView>
