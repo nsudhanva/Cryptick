@@ -21,12 +21,8 @@ import sudhanva.narayana.cryptick.utils.Constants;
  * Created by nsudh on 19-02-2016.
  */
 public class LoginActivity extends AppCompatActivity {
+    /* progress bar */
 
-    // Create a handler to handle the result of the authentication
-    // See Firebase doc: https://www.firebase.com/docs/android/guide/user-auth.html
-    // Remember this: Tokens issued to the authenticated users are
-    // valid for 24 hours by default. You can change this from
-    // the Login & Auth tab on your App Dashboard.
     Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
         @Override
         public void onAuthenticated(AuthData authData) {

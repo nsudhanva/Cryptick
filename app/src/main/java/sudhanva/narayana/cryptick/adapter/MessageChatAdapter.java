@@ -1,5 +1,6 @@
 package sudhanva.narayana.cryptick.adapter;
 
+import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,8 +68,6 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 configureRecipientView(viewHolderRecipient, position);
                 break;
         }
-
-
     }
 
     private void configureSenderView(ViewHolderSender viewHolderSender, int position) {
@@ -76,9 +75,29 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         viewHolderSender.getSenderMessageTextView().setText(senderFireMessage.getMessage());
     }
 
-    private void configureRecipientView(ViewHolderRecipient viewHolderRecipient, int position) {
-        MessageChatModel recipientFireMessage = mListOfFireChat.get(position);
-        viewHolderRecipient.getRecipientMessageTextView().setText(recipientFireMessage.getMessage());
+    private void configureRecipientView(final ViewHolderRecipient viewHolderRecipient, int position) {
+        final MessageChatModel recipientFireMessage = mListOfFireChat.get(position);
+
+        if (recipientFireMessage.getTick() != null) {
+            final int recipientTick = Integer.parseInt(String.valueOf(recipientFireMessage.getTick()));
+
+            new CountDownTimer(recipientTick * 1000, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    viewHolderRecipient.getRecipientMessageTextView().setText(String.valueOf((millisUntilFinished / 1000)));
+                }
+
+                public void onFinish() {
+                    viewHolderRecipient.getRecipientMessageTextView().setText(recipientFireMessage.getMessage());
+                    //ChatActivity removeTick = new ChatActivity();
+                    //Firebase tick = new Firebase(removeTick.mRemoveTick.toString());
+                   // System.out.println("I AM TICK YOU IDIOT" + tick);
+                   // tick.removeValue();
+                }
+            }.start();
+
+        } else
+            viewHolderRecipient.getRecipientMessageTextView().setText(recipientFireMessage.getMessage());
     }
 
     @Override

@@ -8,7 +8,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.firebase.client.ChildEventListener;
@@ -32,21 +35,21 @@ public class ChatActivity extends AppCompatActivity {
     /* Sender and Recipient status*/
     private static final int SENDER_STATUS = 0;
     private static final int RECIPIENT_STATUS = 1;
+    /* unique Firebase ref for this chat */
+    public Firebase mFirebaseTick;
+    /* Listen to change in chat in firabase-remember to remove it */
+    public ChildEventListener mMessageChatListener;
+    public String mTick;
+    public Firebase mRemoveTick;
     private RecyclerView mChatRecyclerView;
     private TextView mUserMessageChatText;
     private MessageChatAdapter mMessageChatAdapter;
     /* Recipient uid */
     private String mRecipientUid;
-
     /* Sender uid */
     private String mSenderUid;
-
     /* unique Firebase ref for this chat */
     private Firebase mFirebaseMessagesChat;
-
-    /* Listen to change in chat in firabase-remember to remove it */
-    private ChildEventListener mMessageChatListener;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,30 @@ public class ChatActivity extends AppCompatActivity {
 
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
+
+        final Button button = (Button) findViewById(R.id.sendUserMessage);
+
+        button.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(ChatActivity.this, button);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        mTick = item.getTitle().toString();
+                        button.setText(mTick);
+                        return true;
+                    }
+                });
+                popup.show();
+                return true;
+            }
+        });
+
 
         // Get information from the previous activity
         Intent getUsersData = getIntent();
@@ -90,7 +117,9 @@ public class ChatActivity extends AppCompatActivity {
         // Initialize firebase for this chat
         mFirebaseMessagesChat = new Firebase(Constants.FIREBASE_URL).child(Constants.CHILD_CHAT).child(usersDataModel.getChatRef());
 
+
     }
+
 
     @Override
     protected void onResume() {
@@ -122,6 +151,7 @@ public class ChatActivity extends AppCompatActivity {
                     } else {
                         newMessage.setRecipientOrSenderStatus(RECIPIENT_STATUS);
                     }
+
                     mMessageChatAdapter.refillAdapter(newMessage);
                     mChatRecyclerView.scrollToPosition(mMessageChatAdapter.getItemCount() - 1);
                 }
@@ -181,20 +211,26 @@ public class ChatActivity extends AppCompatActivity {
         if (!senderMessage.isEmpty()) {
 
             // Log.e(TAG, "send message");
-
+            mFirebaseTick = mFirebaseMessagesChat.push();
             // Send message to firebase
             Map<String, String> newMessage = new HashMap<String, String>();
             newMessage.put("sender", mSenderUid); // Sender uid
             newMessage.put("recipient", mRecipientUid); // Recipient uid
             newMessage.put("message", senderMessage); // Message
+            newMessage.put("tick", mTick);// Tick
 
-            mFirebaseMessagesChat.push().setValue(newMessage);
+            final Button button = (Button) findViewById(R.id.sendUserMessage);
+            button.setText("send");
+
+            mFirebaseTick.setValue(newMessage);
 
             // Clear text
             mUserMessageChatText.setText("");
 
+            mRemoveTick = new Firebase(mFirebaseMessagesChat + "/" + mFirebaseTick.getKey() + "/");
+            System.out.println(mRemoveTick);
         }
     }
-
-
 }
+
+

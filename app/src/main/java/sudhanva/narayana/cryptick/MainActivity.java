@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.ChildEventListener;
@@ -234,11 +233,11 @@ public class MainActivity extends AppCompatActivity {
 
                     // When this device disconnects, remove it
                     myConnectionsStatusRef.onDisconnect().setValue(Constants.KEY_OFFLINE);
-                    Toast.makeText(MainActivity.this, "Connected to Firebase", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "Connected to Firebase", Toast.LENGTH_SHORT).show();
 
                 } else {
 
-                    Toast.makeText(MainActivity.this, "Disconnected from Firebase", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "Disconnected from Firebase", Toast.LENGTH_SHORT).show();
 
                 }
 

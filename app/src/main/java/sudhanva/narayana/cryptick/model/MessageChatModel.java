@@ -5,6 +5,7 @@ public class MessageChatModel {
     private String message;
     private String recipient;
     private String sender;
+    private String tick;
 
     private int mRecipientOrSenderStatus;
 
@@ -17,6 +18,8 @@ public class MessageChatModel {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public String getTick(){ return tick; }
 
     public String getRecipient() {
         return recipient;
