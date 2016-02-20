@@ -6,7 +6,6 @@
         <item name="colorPrimary">@color/indigo</item>
         <item name="colorPrimaryDark">@color/indigo_dark</item>
         <item name="colorAccent">@color/pink</item>
-        <item name="android:textColor">@color/white</item>
     </style>
 
 </resources>
