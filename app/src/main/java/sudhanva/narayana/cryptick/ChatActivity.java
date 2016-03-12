@@ -1,5 +1,6 @@
 package sudhanva.narayana.cryptick;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -31,6 +32,8 @@ import sudhanva.narayana.cryptick.utils.Constants;
 
 public class ChatActivity extends AppCompatActivity {
 
+    public static Context context;
+
     private static final String TAG = ChatActivity.class.getSimpleName();
     /* Sender and Recipient status*/
     private static final int SENDER_STATUS = 0;
@@ -55,6 +58,8 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        ChatActivity.context = this;
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -116,6 +121,10 @@ public class ChatActivity extends AppCompatActivity {
 
         // Initialize firebase for this chat
         mFirebaseMessagesChat = new Firebase(Constants.FIREBASE_URL).child(Constants.CHILD_CHAT).child(usersDataModel.getChatRef());
+    }
+
+    public static Context getContext() {
+        return ChatActivity.context;
     }
 
 
@@ -218,7 +227,7 @@ public class ChatActivity extends AppCompatActivity {
             newMessage.put("recipient", mRecipientUid); // Recipient uid
             newMessage.put("message", senderMessage); // Message
             newMessage.put("tick", mTick);// Tick
-            newMessage.put("tickURL",mRemoveTick);
+            newMessage.put("tickURL", mRemoveTick);
 
             final Button button = (Button) findViewById(R.id.sendUserMessage);
             button.setText("send");
@@ -228,7 +237,7 @@ public class ChatActivity extends AppCompatActivity {
             // Clear text
             mUserMessageChatText.setText("");
 
-
+            mTick = null;
             System.out.println(mRemoveTick);
         }
     }

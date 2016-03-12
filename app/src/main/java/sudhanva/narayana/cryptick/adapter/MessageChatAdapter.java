@@ -1,8 +1,11 @@
 package sudhanva.narayana.cryptick.adapter;
 
+import android.content.DialogInterface;
 import android.os.CountDownTimer;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,7 @@ import com.firebase.client.Firebase;
 
 import java.util.List;
 
+import sudhanva.narayana.cryptick.ChatActivity;
 import sudhanva.narayana.cryptick.R;
 import sudhanva.narayana.cryptick.model.MessageChatModel;
 
@@ -78,7 +82,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         viewHolderSender.getSenderMessageTextView().setText(senderFireMessage.getMessage());
     }
 
-    private void configureRecipientView(final ViewHolderRecipient viewHolderRecipient, int position) {
+    private void configureRecipientView(final ViewHolderRecipient viewHolderRecipient, final int position) {
         final MessageChatModel recipientFireMessage = mListOfFireChat.get(position);
 
         if (recipientFireMessage.getTick() != null) {
@@ -88,6 +92,45 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                 public void onTick(long millisUntilFinished) {
                     viewHolderRecipient.getRecipientMessageTextView().setText(String.valueOf((millisUntilFinished / 1000)));
+                    viewHolderRecipient.getRecipientMessageTextView().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(
+                                    ChatActivity.getContext(), R.style.AppTheme
+                            ));
+
+                            // 2. Chain together various setter methods to set the dialog characteristics
+                            builder.setMessage(R.string.tick_dialog_message)
+                                    .setTitle(R.string.tick_dialog);
+
+                            // Add the buttons
+                            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    cancel();
+                                    viewHolderRecipient.getRecipientMessageTextView().setText(recipientFireMessage.getMessage());
+
+                                    String replace = recipientFireMessage.getTickURL();
+
+                                    removeTick = new Firebase(replace.replace("%40", "@"));
+
+                                    Log.i("FB Ref", removeTick.toString());
+                                    Log.i("FB Ref Tick", removeTick.child("tick").toString());
+                                    removeTick.child("tick").setValue(null);
+                                }
+                            });
+                            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // User cancelled the dialog
+                                }
+                            });
+
+                            // Create the AlertDialog
+                            AlertDialog dialog = builder.create();                            // Set other dialog properties
+
+                            dialog.show();
+                        }
+                    });
                 }
 
                 public void onFinish() {
@@ -98,7 +141,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                     removeTick = new Firebase(replace.replace("%40", "@"));
 
-                    Log.i("FB Ref",removeTick.toString());
+                    Log.i("FB Ref", removeTick.toString());
                     Log.i("FB Ref Tick", removeTick.child("tick").toString());
                     removeTick.child("tick").setValue(null);
                 }
