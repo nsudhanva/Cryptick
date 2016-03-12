@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -87,7 +86,7 @@ public class UsersChatAdapter extends RecyclerView.Adapter<UsersChatAdapter.View
     /* ViewHolder for RecyclerView */
     public class ViewHolderUsers extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ImageView mUserPhoto; // User avatar
+        //private ImageView mUserPhoto; // User avatar
         private TextView mUserFirstName; // User first name
         private TextView mStatusConnection; // User presence
         private Context mContextViewHolder;
@@ -103,9 +102,9 @@ public class UsersChatAdapter extends RecyclerView.Adapter<UsersChatAdapter.View
             itemView.setOnClickListener(this);
         }
 
-        public ImageView getUserPhoto() {
+       /* public ImageView getUserPhoto() {
             return mUserPhoto;
-        }
+        }*/
 
         public TextView getUserFirstName() {
             return mUserFirstName;

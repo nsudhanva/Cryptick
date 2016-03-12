@@ -22,6 +22,16 @@ public class UsersChatModel implements Parcelable {
     private String userEmail;
     private String createdAt;
     private String connection;
+    private String tickBal;
+
+    public String getTickBal() {
+        return tickBal;
+    }
+
+    public void setTickBal(String tickBal) {
+        this.tickBal = tickBal;
+    }
+
     private int avatarId;
     private String mRecipientUid;
     /*Current user (or sender) info*/

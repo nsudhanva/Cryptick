@@ -94,10 +94,9 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     viewHolderRecipient.getRecipientMessageTextView().setText(recipientFireMessage.getMessage());
                     Log.i("Get Tick URL", recipientFireMessage.getTickURL());
 
-
                     String replace = recipientFireMessage.getTickURL();
 
-                    removeTick = new Firebase( replace.replace("%40", "@"));
+                    removeTick = new Firebase(replace.replace("%40", "@"));
 
                     Log.i("FB Ref",removeTick.toString());
                     Log.i("FB Ref Tick", removeTick.child("tick").toString());

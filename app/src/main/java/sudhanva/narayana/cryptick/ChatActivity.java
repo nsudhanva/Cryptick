@@ -116,8 +116,6 @@ public class ChatActivity extends AppCompatActivity {
 
         // Initialize firebase for this chat
         mFirebaseMessagesChat = new Firebase(Constants.FIREBASE_URL).child(Constants.CHILD_CHAT).child(usersDataModel.getChatRef());
-
-
     }
 
 

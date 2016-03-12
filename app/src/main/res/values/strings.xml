@@ -33,4 +33,9 @@
     <string name="register_error_message">Please make sure you enter first name, email and password!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="tick_dialog">Are you sure you want to use a tick?</string>
+    <string name="tick_dialog_message">Use a tick to view this message now!</string>
 </resources>

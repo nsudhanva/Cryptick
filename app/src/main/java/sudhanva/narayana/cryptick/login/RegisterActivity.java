@@ -108,7 +108,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     map.put(Constants.KEY_PROVIDER, authData.getProvider()); // The authentication method used
                                     map.put(Constants.KEY_FIRST_NAME, finalUserFirstName);   // User first name
                                     map.put(Constants.KEY_USER_EMAIL, (String) authData.getProviderData().get(Constants.KEY_EMAIL)); // User email address
-                                    map.put(Constants.CHILD_CONNECTION, Constants.KEY_ONLINE);  // User status
+                                    map.put(Constants.CHILD_CONNECTION, Constants.KEY_ONLINE); // User status
+                                    map.put(Constants.USER_TICK, 100);
 
                                     // Time user date is stored in database
                                     long createTime = new Date().getTime();

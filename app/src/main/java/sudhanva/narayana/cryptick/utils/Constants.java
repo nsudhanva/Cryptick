@@ -11,6 +11,7 @@ public final class Constants {
     public static final String CHILD_USERS = "users";
     public static final String CHILD_CHAT = "chat";
     public static final String CHILD_CONNECTION = "connection";
+    public static final String USER_TICK = "tickBal";
 
     /* Key for email */
     public static final String KEY_EMAIL = "email";
