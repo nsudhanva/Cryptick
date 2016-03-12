@@ -40,7 +40,7 @@ public class ChatActivity extends AppCompatActivity {
     /* Listen to change in chat in firabase-remember to remove it */
     public ChildEventListener mMessageChatListener;
     public String mTick;
-    public Firebase mRemoveTick;
+    public String mRemoveTick;
     private RecyclerView mChatRecyclerView;
     private TextView mUserMessageChatText;
     private MessageChatAdapter mMessageChatAdapter;
@@ -212,12 +212,15 @@ public class ChatActivity extends AppCompatActivity {
 
             // Log.e(TAG, "send message");
             mFirebaseTick = mFirebaseMessagesChat.push();
+
+            mRemoveTick = (mFirebaseMessagesChat + "/" + mFirebaseTick.getKey() + "/");
             // Send message to firebase
             Map<String, String> newMessage = new HashMap<String, String>();
             newMessage.put("sender", mSenderUid); // Sender uid
             newMessage.put("recipient", mRecipientUid); // Recipient uid
             newMessage.put("message", senderMessage); // Message
             newMessage.put("tick", mTick);// Tick
+            newMessage.put("tickURL",mRemoveTick);
 
             final Button button = (Button) findViewById(R.id.sendUserMessage);
             button.setText("send");
@@ -227,7 +230,7 @@ public class ChatActivity extends AppCompatActivity {
             // Clear text
             mUserMessageChatText.setText("");
 
-            mRemoveTick = new Firebase(mFirebaseMessagesChat + "/" + mFirebaseTick.getKey() + "/");
+
             System.out.println(mRemoveTick);
         }
     }

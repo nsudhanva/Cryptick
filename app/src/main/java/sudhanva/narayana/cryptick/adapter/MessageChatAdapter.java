@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
+
 import java.util.List;
 
 import sudhanva.narayana.cryptick.R;
@@ -18,6 +20,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int SENDER = 0;
     private static final int RECIPIENT = 1;
     private List<MessageChatModel> mListOfFireChat;
+    public Firebase removeTick;
 
     public MessageChatAdapter(List<MessageChatModel> listOfFireChats) {
         mListOfFireChat = listOfFireChats;
@@ -89,10 +92,16 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                 public void onFinish() {
                     viewHolderRecipient.getRecipientMessageTextView().setText(recipientFireMessage.getMessage());
-                    //ChatActivity removeTick = new ChatActivity();
-                    //Firebase tick = new Firebase(removeTick.mRemoveTick.toString());
-                   // System.out.println("I AM TICK YOU IDIOT" + tick);
-                   // tick.removeValue();
+                    Log.i("Get Tick URL", recipientFireMessage.getTickURL());
+
+
+                    String replace = recipientFireMessage.getTickURL();
+
+                    removeTick = new Firebase( replace.replace("%40", "@"));
+
+                    Log.i("FB Ref",removeTick.toString());
+                    Log.i("FB Ref Tick", removeTick.child("tick").toString());
+                    removeTick.child("tick").setValue(null);
                 }
             }.start();
 

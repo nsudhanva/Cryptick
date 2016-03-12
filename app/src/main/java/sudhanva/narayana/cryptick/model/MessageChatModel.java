@@ -6,10 +6,19 @@ public class MessageChatModel {
     private String recipient;
     private String sender;
     private String tick;
+    private String tickURL;
 
     private int mRecipientOrSenderStatus;
 
     /* Setter */
+
+    public String getTickURL() {
+        return tickURL;
+    }
+
+    public void setTickURL(String tickURL) {
+        this.tickURL = tickURL;
+    }
 
     public String getMessage() {
         return message;
