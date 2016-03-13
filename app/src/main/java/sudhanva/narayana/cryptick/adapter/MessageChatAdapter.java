@@ -1,5 +1,6 @@
 package sudhanva.narayana.cryptick.adapter;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
@@ -10,21 +11,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
+import com.firebase.client.Transaction;
 
 import java.util.List;
 
 import sudhanva.narayana.cryptick.ChatActivity;
 import sudhanva.narayana.cryptick.R;
 import sudhanva.narayana.cryptick.model.MessageChatModel;
+import sudhanva.narayana.cryptick.utils.Constants;
 
 public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int SENDER = 0;
     private static final int RECIPIENT = 1;
-    private List<MessageChatModel> mListOfFireChat;
     public Firebase removeTick;
+    public Firebase updateBal;
+    private List<MessageChatModel> mListOfFireChat;
 
     public MessageChatAdapter(List<MessageChatModel> listOfFireChats) {
         mListOfFireChat = listOfFireChats;
@@ -116,7 +124,9 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                                     Log.i("FB Ref", removeTick.toString());
                                     Log.i("FB Ref Tick", removeTick.child("tick").toString());
-                                    removeTick.child("tick").setValue(null);
+
+                                    String recipient = recipientFireMessage.getRecipient();
+                                    updateTick(removeTick, recipient);
                                 }
                             });
                             builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -184,6 +194,83 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     /*ViewHolder for Sender*/
 
+    private void updateTick(final Firebase removeTick, String recipient) {
+
+        updateBal = new Firebase(Constants.FIREBASE_URL + "/" + Constants.CHILD_USERS + "/" + recipient + "/");
+
+        if (updateBal.child("tickBal").toString().equals("0")) {
+            buildBuyDialog(updateBal);
+        } else {
+            updateBal.child("tickBal").runTransaction(new Transaction.Handler() {
+                @Override
+                public Transaction.Result doTransaction(MutableData currentData) {
+                    if (currentData.getValue() == "0") {
+
+                    } else {
+                        currentData.setValue((Long) currentData.getValue() - 1);
+                    }
+                    return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
+                }
+
+                @Override
+                public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
+                    //This method will be called once with the results of the transaction.
+                    removeTick.child("tick").setValue(null);
+                }
+            });
+        }
+    }
+
+    private void buildBuyDialog(final Firebase updateBal) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(
+                ChatActivity.getContext(), R.style.AppTheme
+        ));
+
+        builder.setMessage(R.string.no_tick)
+                .setTitle(R.string.buy_tick);
+
+        // Add the buttons
+        builder.setPositiveButton(R.string.buy, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                buyTick(updateBal);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void buyTick(Firebase updateBal) {
+        updateBal.child("tickBal").runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData currentData) {
+                if (currentData.getValue() == "0") {
+                    currentData.setValue(100);
+                } else {
+                    currentData.setValue((Long) currentData.getValue() + 100);
+                }
+                return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
+            }
+
+            @Override
+            public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
+                //This method will be called once with the results of the transaction.
+                Context context = ChatActivity.getContext();
+                CharSequence text = "Congo! You bought 100 new ticks!";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        });
+    }
+
     public class ViewHolderSender extends RecyclerView.ViewHolder {
 
         private TextView mSenderMessageTextView;
@@ -201,7 +288,6 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mSenderMessageTextView = senderMessage;
         }
     }
-
 
     /*ViewHolder for Recipient*/
     public class ViewHolderRecipient extends RecyclerView.ViewHolder {
