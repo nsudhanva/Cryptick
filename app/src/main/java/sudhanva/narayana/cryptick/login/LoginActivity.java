@@ -22,6 +22,8 @@ import sudhanva.narayana.cryptick.utils.Constants;
  * Created by nsudh on 19-02-2016.
  */
 public class LoginActivity extends AppCompatActivity {
+    /* progress bar */
+    private ProgressDialog mAuthProgressDialog;
     Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
         @Override
         public void onAuthenticated(AuthData authData) {
@@ -39,8 +41,6 @@ public class LoginActivity extends AppCompatActivity {
             showErrorMessageToUser(firebaseError.getMessage());
         }
     };
-    /* progress bar */
-    private ProgressDialog mAuthProgressDialog;
     private EditText mUserEmail;
     private EditText mUserPassWord;
     private Button mLogin;
@@ -94,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                     // Log in
                     Firebase authenticateUser = new Firebase(Constants.FIREBASE_URL); // Get app main firebase url
                     authenticateUser.authWithPassword(userName, passWord, authResultHandler);
+                    mAuthProgressDialog.dismiss();
                 }
 
 
@@ -109,6 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.ok, null);
         AlertDialog dialog = builder.create();
         dialog.show();
+        mAuthProgressDialog.dismiss();
     }
 
 }

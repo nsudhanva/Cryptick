@@ -87,13 +87,13 @@ public class RegisterActivity extends AppCompatActivity {
                     // note from Firebase: Creating an account will not log that new account in
                     // so you have to log user in automatically when account is successfully created
 
-                    final Firebase registerMChatUser = new Firebase(Constants.FIREBASE_URL);  // Get app main firebase url
+                    final Firebase registerChatUser = new Firebase(Constants.FIREBASE_URL);  // Get app main firebase url
                     final String finalUserEmail = userEmail;
                     final String finalUserPassword = userPassword;
                     final String finalUserFirstName = userFirstName;
 
                     // Create new user
-                    registerMChatUser.createUser(userEmail, userPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
+                    registerChatUser.createUser(userEmail, userPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
                         @Override
                         public void onSuccess(Map<String, Object> result) {
 
@@ -105,7 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
                             // Note from firebase: Creating an account will not log that new account in.
                             // Successfully created user account, and log the user in automatically
 
-                            registerMChatUser.authWithPassword(finalUserEmail, finalUserPassword, new Firebase.AuthResultHandler() {
+                            registerChatUser.authWithPassword(finalUserEmail, finalUserPassword, new Firebase.AuthResultHandler() {
                                 @Override
                                 public void onAuthenticated(AuthData authData) {
 
@@ -125,7 +125,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     // Store user data in the path https://<YOUR-FIREBASE-APP>.firebaseio.com/users/<uid>,
                                     // where users/ is any arbitrary path to store user data, and <uid> represents the
                                     // unique id obtained from the authentication data
-                                    registerMChatUser.child(Constants.CHILD_USERS).child(authData.getUid()).setValue(map);
+                                    registerChatUser.child(Constants.CHILD_USERS).child(authData.getUid()).setValue(map);
 
 
                                     // After storing, go to main activity
@@ -169,10 +169,11 @@ public class RegisterActivity extends AppCompatActivity {
         //Create an AlertDialog to show error message
         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
         builder.setMessage(errorMessage)
-                .setTitle(getString(R.string.dialog_title_error))
+                .setTitle(getString(R.string.error_cannot_be_empty))
                 .setPositiveButton(android.R.string.ok, null);
         AlertDialog dialog = builder.create();
         dialog.show();
+        mAuthProgressDialog.dismiss();
     }
 }
 
