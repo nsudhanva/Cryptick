@@ -1,6 +1,7 @@
 package sudhanva.narayana.cryptick.login;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,8 +22,6 @@ import sudhanva.narayana.cryptick.utils.Constants;
  * Created by nsudh on 19-02-2016.
  */
 public class LoginActivity extends AppCompatActivity {
-    /* progress bar */
-
     Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
         @Override
         public void onAuthenticated(AuthData authData) {
@@ -32,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-
         }
 
         @Override
@@ -41,9 +39,11 @@ public class LoginActivity extends AppCompatActivity {
             showErrorMessageToUser(firebaseError.getMessage());
         }
     };
+    /* progress bar */
+    private ProgressDialog mAuthProgressDialog;
     private EditText mUserEmail;
     private EditText mUserPassWord;
-    private Button mLoginToMChat;
+    private Button mLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +63,18 @@ public class LoginActivity extends AppCompatActivity {
         mUserEmail = (EditText) findViewById(R.id.input_email);
         mUserPassWord = (EditText) findViewById(R.id.input_password);
         ;
-        mLoginToMChat = (Button) findViewById(R.id.signInButton);
+        mLogin = (Button) findViewById(R.id.signInButton);
 
         // Log In click listener
-        mLoginToMChat.setOnClickListener(new View.OnClickListener() {
+        mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 /* Validate input text */
+                mAuthProgressDialog = new ProgressDialog(LoginActivity.this);
+                mAuthProgressDialog.setTitle("Logging In..");
+                mAuthProgressDialog.setCancelable(false);
+                mAuthProgressDialog.show();
 
                 // Get user email and password
                 String userName = mUserEmail.getText().toString();
@@ -83,7 +87,8 @@ public class LoginActivity extends AppCompatActivity {
                 // validate fields
                 if (userName.isEmpty() || passWord.isEmpty()) {
                     // show message when field is empty
-                    showErrorMessageToUser(getString(R.string.dialog_title_error));
+                    showErrorMessageToUser(getString(R.string.error_cannot_be_empty));
+                    mAuthProgressDialog.dismiss();
 
                 } else {
                     // Log in

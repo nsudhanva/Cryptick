@@ -112,6 +112,7 @@
                 android:background="@color/indigo_dark"
                 android:text="@string/sign_up"
                 android:textColor="@color/white" />
+
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

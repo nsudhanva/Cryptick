@@ -1,6 +1,7 @@
 package sudhanva.narayana.cryptick.login;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -33,6 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mUserEmailRegister;
     private EditText mUserPassWordRegister;
     private Button mRegisterButton;
+    private ProgressDialog mAuthProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,12 @@ public class RegisterActivity extends AppCompatActivity {
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                  /* validate input text */
+                mAuthProgressDialog = new ProgressDialog(RegisterActivity.this);
+                mAuthProgressDialog.setTitle("Signing You Up..");
+                mAuthProgressDialog.setCancelable(false);
+                mAuthProgressDialog.show();
 
                 // Get name, email and password
                 String userFirstName = mUserFirstNameRegister.getText().toString();
@@ -125,7 +132,9 @@ public class RegisterActivity extends AppCompatActivity {
                                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    mAuthProgressDialog.dismiss();
                                     startActivity(intent);
+
                                 }
 
                                 @Override
@@ -133,6 +142,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     // There is an error, and close the screen
                                     Toast.makeText(RegisterActivity.this, "An error occurred!", Toast.LENGTH_SHORT).show();
                                     finish();
+                                    mAuthProgressDialog.dismiss();
                                 }
                             });
 
@@ -143,6 +153,7 @@ public class RegisterActivity extends AppCompatActivity {
                             // There is an error in creating a user
                             //Log.e(TAG, "error creating user");
                             showErrorMessageToUser(firebaseError.getMessage());
+                            mAuthProgressDialog.dismiss();
                         }
                     });
 

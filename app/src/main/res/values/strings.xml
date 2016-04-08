@@ -24,7 +24,7 @@
     <string name="log_error_failed_to_change_password">"Failed to change the password: "</string>
     <string name="error_invalid_email_not_valid">%s is not a valid email</string>
     <string name="error_message_email_issue">There was an error with your email; please check that you entered it correctly.</string>
-    <string name="error_you_didnt_give_permissions">You must give ShoppingList++ permission to access your Google account information if you want to use Google sign-in.</string>
+    <string name="error_you_didnt_give_permissions">You must give Cryptick permission to access your Google account information if you want to use Google sign-in.</string>
     <string name="error_email_taken">The email is already taken.</string>
     <string name="error_invalid_password_not_valid">Please enter a password that is at least 6 characters long.</string>
     <string name="error_cannot_be_empty">This cannot be empty.</string>
