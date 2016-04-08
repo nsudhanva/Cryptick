@@ -216,6 +216,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
                     //This method will be called once with the results of the transaction.
                     removeTick.child("tick").setValue(null);
+                    removeTick.child("tickURL").setValue(null);
                 }
             });
         }
@@ -251,7 +252,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             @Override
             public Transaction.Result doTransaction(MutableData currentData) {
                 if (currentData.getValue() == "0") {
-                    currentData.setValue(100);
+                    //currentData.setValue(100);
                 } else {
                     currentData.setValue((Long) currentData.getValue() + 100);
                 }
