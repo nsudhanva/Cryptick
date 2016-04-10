@@ -12,4 +12,16 @@
         android:id="@+id/thirty"
         android:title="30"/>
 
+    <item
+        android:id="@+id/hundred"
+        android:title="100" />
+
+    <item
+        android:id="@+id/fhundred"
+        android:title="500" />
+
+    <item
+        android:id="@+id/thousand"
+        android:title="1000" />
+
 </menu>
