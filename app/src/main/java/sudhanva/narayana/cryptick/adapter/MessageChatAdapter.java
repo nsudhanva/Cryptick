@@ -1,23 +1,22 @@
 package sudhanva.narayana.cryptick.adapter;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.MutableData;
 import com.firebase.client.Transaction;
+import com.firebase.client.ValueEventListener;
 
 import java.util.List;
 
@@ -32,6 +31,8 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int RECIPIENT = 1;
     public Firebase removeTick;
     public Firebase updateBal;
+    public Firebase tickBal;
+    public int tickVal;
     private List<MessageChatModel> mListOfFireChat;
 
     public MessageChatAdapter(List<MessageChatModel> listOfFireChats) {
@@ -93,6 +94,23 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private void configureRecipientView(final ViewHolderRecipient viewHolderRecipient, final int position) {
         final MessageChatModel recipientFireMessage = mListOfFireChat.get(position);
 
+        String recipient = recipientFireMessage.getRecipient();
+
+
+        tickBal = new Firebase(Constants.FIREBASE_URL + "/" + Constants.CHILD_USERS + "/" + recipient);
+
+        tickBal.child("tickBal").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                tickVal = Integer.parseInt(dataSnapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
         if (recipientFireMessage.getTick() != null) {
             final int recipientTick = Integer.parseInt(String.valueOf(recipientFireMessage.getTick()));
 
@@ -104,41 +122,74 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         @Override
                         public void onClick(View v) {
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(
-                                    ChatActivity.getContext(), R.style.AppTheme
-                            ));
+                            if (tickVal == 0) {
+                                Log.i("Zero Inside", "Checked 0 successfully");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(
+                                        ChatActivity.getContext(), R.style.AppTheme
+                                ));
 
-                            // 2. Chain together various setter methods to set the dialog characteristics
-                            builder.setMessage(R.string.tick_dialog_message)
-                                    .setTitle(R.string.tick_dialog);
+                                // 2. Chain together various setter methods to set the dialog characteristics
+                                builder.setMessage(R.string.buy_tick)
+                                        .setTitle(R.string.no_tick);
 
-                            // Add the buttons
-                            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    cancel();
-                                    viewHolderRecipient.getRecipientMessageTextView().setText(recipientFireMessage.getMessage());
+                                // Add the buttons
+                                builder.setPositiveButton(R.string.buy, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Log.i("onClick", "Buy button clicked");
 
-                                    String replace = recipientFireMessage.getTickURL();
+                                    }
+                                });
+                                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // User cancelled the dialog
+                                    }
+                                });
 
-                                    removeTick = new Firebase(replace.replace("%40", "@"));
+                                // Create the AlertDialog
+                                AlertDialog dialog = builder.create();             // Set other dialog properties
 
-                                    Log.i("FB Ref", removeTick.toString());
-                                    Log.i("FB Ref Tick", removeTick.child("tick").toString());
+                                dialog.show();
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(
+                                        ChatActivity.getContext(), R.style.AppTheme
+                                ));
 
-                                    String recipient = recipientFireMessage.getRecipient();
-                                    updateTick(removeTick, recipient);
-                                }
-                            });
-                            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    // User cancelled the dialog
-                                }
-                            });
+                                // 2. Chain together various setter methods to set the dialog characteristics
+                                builder.setMessage(R.string.tick_dialog_message + String.valueOf(tickVal))
+                                        .setTitle(R.string.tick_dialog);
 
-                            // Create the AlertDialog
-                            AlertDialog dialog = builder.create();                            // Set other dialog properties
+                                // Add the buttons
+                                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
 
-                            dialog.show();
+                                        String recipient = recipientFireMessage.getRecipient();
+
+                                        cancel();
+                                        viewHolderRecipient.getRecipientMessageTextView().setText(recipientFireMessage.getMessage());
+
+                                        String replace = recipientFireMessage.getTickURL();
+
+                                        removeTick = new Firebase(replace.replace("%40", "@"));
+
+                                        Log.i("FB Ref", removeTick.toString());
+                                        Log.i("FB Ref Tick", removeTick.child("tick").toString());
+
+                                        updateTick(removeTick, recipient);
+                                        viewHolderRecipient.getRecipientMessageTextView().setOnClickListener(null);
+                                    }
+                                });
+                                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // User cancelled the dialog
+                                    }
+                                });
+
+                                // Create the AlertDialog
+                                AlertDialog dialog = builder.create();                            // Set other dialog properties
+
+                                dialog.show();
+                            }
+
                         }
                     });
                 }
@@ -154,6 +205,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     Log.i("FB Ref", removeTick.toString());
                     Log.i("FB Ref Tick", removeTick.child("tick").toString());
                     removeTick.child("tick").setValue(null);
+                    removeTick.child("tickURL").setValue(null);
                 }
             }.start();
 
@@ -198,63 +250,14 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         updateBal = new Firebase(Constants.FIREBASE_URL + "/" + Constants.CHILD_USERS + "/" + recipient + "/");
 
-        if (updateBal.child("tickBal").toString().equals("0")) {
-            buildBuyDialog(updateBal);
-        } else {
-            updateBal.child("tickBal").runTransaction(new Transaction.Handler() {
-                @Override
-                public Transaction.Result doTransaction(MutableData currentData) {
-                    if (currentData.getValue() == "0") {
-
-                    } else {
-                        currentData.setValue((Long) currentData.getValue() - 1);
-                    }
-                    return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
-                }
-
-                @Override
-                public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
-                    //This method will be called once with the results of the transaction.
-                    removeTick.child("tick").setValue(null);
-                    removeTick.child("tickURL").setValue(null);
-                }
-            });
-        }
-    }
-
-    private void buildBuyDialog(final Firebase updateBal) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(
-                ChatActivity.getContext(), R.style.AppTheme
-        ));
-
-        builder.setMessage(R.string.no_tick)
-                .setTitle(R.string.buy_tick);
-
-        // Add the buttons
-        builder.setPositiveButton(R.string.buy, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                buyTick(updateBal);
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog
-            }
-        });
-
-        // Create the AlertDialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void buyTick(Firebase updateBal) {
         updateBal.child("tickBal").runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData currentData) {
-                if (currentData.getValue() == "0") {
-                    //currentData.setValue(100);
+                if (Integer.parseInt(currentData.getValue().toString()) == 0) {
+                    Log.i("Zero Check", "Checked 0 successfully");
+
                 } else {
-                    currentData.setValue((Long) currentData.getValue() + 100);
+                    currentData.setValue((Long) currentData.getValue() - 1);
                 }
                 return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
             }
@@ -262,12 +265,8 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             @Override
             public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
                 //This method will be called once with the results of the transaction.
-                Context context = ChatActivity.getContext();
-                CharSequence text = "Congo! You bought 100 new ticks!";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+                removeTick.child("tick").setValue(null);
+                removeTick.child("tickURL").setValue(null);
             }
         });
     }

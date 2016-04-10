@@ -32,12 +32,11 @@ import sudhanva.narayana.cryptick.utils.Constants;
 
 public class ChatActivity extends AppCompatActivity {
 
-    public static Context context;
-
     private static final String TAG = ChatActivity.class.getSimpleName();
     /* Sender and Recipient status*/
     private static final int SENDER_STATUS = 0;
     private static final int RECIPIENT_STATUS = 1;
+    public static Context context;
     /* unique Firebase ref for this chat */
     public Firebase mFirebaseTick;
     /* Listen to change in chat in firabase-remember to remove it */
@@ -53,6 +52,10 @@ public class ChatActivity extends AppCompatActivity {
     private String mSenderUid;
     /* unique Firebase ref for this chat */
     private Firebase mFirebaseMessagesChat;
+
+    public static Context getContext() {
+        return ChatActivity.context;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,11 +125,6 @@ public class ChatActivity extends AppCompatActivity {
         // Initialize firebase for this chat
         mFirebaseMessagesChat = new Firebase(Constants.FIREBASE_URL).child(Constants.CHILD_CHAT).child(usersDataModel.getChatRef());
     }
-
-    public static Context getContext() {
-        return ChatActivity.context;
-    }
-
 
     @Override
     protected void onResume() {
@@ -227,7 +225,9 @@ public class ChatActivity extends AppCompatActivity {
             newMessage.put("recipient", mRecipientUid); // Recipient uid
             newMessage.put("message", senderMessage); // Message
             newMessage.put("tick", mTick);// Tick
-            newMessage.put("tickURL", mRemoveTick);
+
+            if (mTick != null)
+                newMessage.put("tickURL", mRemoveTick);
 
             final Button button = (Button) findViewById(R.id.sendUserMessage);
             button.setText("send");

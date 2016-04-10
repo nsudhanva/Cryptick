@@ -38,7 +38,7 @@
     <string name="buy">BUY</string>
 
     <string name="tick_dialog">Are you sure you want to use a tick?</string>
-    <string name="tick_dialog_message">Use a tick to view this message now!</string>
+    <string name="tick_dialog_message">Use a tick to view this message now! Remaining: </string>
 
     <string name="no_tick">Sorry you are out of ticks!</string>
     <string name="buy_tick">Buy ticks from the Store</string>
