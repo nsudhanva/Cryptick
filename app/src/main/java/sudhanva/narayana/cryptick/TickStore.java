@@ -27,8 +27,9 @@ import sudhanva.narayana.cryptick.utils.Constants;
 public class TickStore extends AppCompatActivity {
 
     public String recipient;
+    public String flag;
     public Firebase updateBal;
-    int radiox;
+    private int radiox;
 
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
@@ -38,19 +39,19 @@ public class TickStore extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.radioButton:
                 if (checked)
-                    radiox = 50;
+                    radiox = 100;
                 break;
             case R.id.radioButton2:
                 if (checked)
-                    radiox = 100;
+                    radiox = 500;
                 break;
             case R.id.radioButton3:
                 if (checked)
-                    radiox = 500;
+                    radiox = 1000;
                 break;
             case R.id.radioButton4:
                 if (checked)
-                    radiox = 1000;
+                    radiox = 10000;
                 break;
         }
     }
@@ -67,14 +68,21 @@ public class TickStore extends AppCompatActivity {
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
 
-        // Enable the Up button
-        ab.setDisplayHomeAsUpEnabled(true);
 
         Button buyButton = (Button) findViewById(R.id.buyButton);
+        Button cancelButton = (Button) findViewById(R.id.cancelButton);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            recipient = extras.getString("EXTRA_SESSION_ID");
+            recipient = extras.getString("EXTRA_RID");
+            flag = extras.getString("EXTRA_FLAG");
+        }
+
+        // Enable the Up button
+        ab.setDisplayHomeAsUpEnabled(true);
+
+        if (flag != null) {
+            ab.setDisplayHomeAsUpEnabled(false);
         }
 
         buyButton.setOnClickListener(new View.OnClickListener() {
@@ -105,17 +113,18 @@ public class TickStore extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
-                                //This method will be called once with the results of the transaction.
+                            public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {                                //This method will be called once with the results of the transaction.
+
+                                finish();
+                                Context context = getApplicationContext();
+                                CharSequence text = "Congo! You have bought" + radiox + " ticks!";
+                                int duration = Toast.LENGTH_LONG;
+
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.show();
                             }
                         });
 
-                        Context context = getApplicationContext();
-                        CharSequence text = "Congo! You have bought" + radiox + " ticks!";
-                        int duration = Toast.LENGTH_LONG;
-
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();
                     }
                 });
                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -132,5 +141,11 @@ public class TickStore extends AppCompatActivity {
             }
         });
 
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }

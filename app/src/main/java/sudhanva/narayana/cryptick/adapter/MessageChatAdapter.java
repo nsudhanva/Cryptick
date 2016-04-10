@@ -142,8 +142,8 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                                 ChatActivity.getContext(), R.style.AppTheme
                                         ), TickStore.class);
 
-                                        intent.putExtra("EXTRA_SESSION_ID", recipientFireMessage.getRecipient());
-
+                                        intent.putExtra("EXTRA_RID", recipientFireMessage.getRecipient());
+                                        intent.putExtra("EXTRA_FLAG", "MCA");
                                         new ContextThemeWrapper(
                                                 ChatActivity.getContext(), R.style.AppTheme
                                         ).startActivity(intent);
@@ -205,6 +205,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
 
                 public void onFinish() {
+
                     viewHolderRecipient.getRecipientMessageTextView().setText(recipientFireMessage.getMessage());
                     Log.i("Get Tick URL", recipientFireMessage.getTickURL());
 
@@ -216,6 +217,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     Log.i("FB Ref Tick", removeTick.child("tick").toString());
                     removeTick.child("tick").setValue(null);
                     removeTick.child("tickURL").setValue(null);
+                    cancel();
                 }
             }.start();
 
