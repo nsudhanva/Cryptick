@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    public String userIdToTickStore;
     /* Updating connection status */
     Firebase myConnectionsStatusRef;
     /* Reference to firebase */
@@ -38,31 +39,22 @@ public class MainActivity extends AppCompatActivity {
     private Firebase mFireChatUsersRef;
     /* Listener for Firebase session changes */
     private Firebase.AuthStateListener mAuthStateListener;
-
     /* Data from the authenticated user */
     private AuthData mAuthData;
-
     /* recyclerView for mchat users */
     private RecyclerView mUsersFireChatRecyclerView;
-
     /* progress bar */
     private View mProgressBarForUsers;
-
     /* fire chat adapter */
     private UsersChatAdapter mUsersChatAdapter;
-
     /* current user uid */
     private String mCurrentUserUid;
-
     /* current user email */
     private String mCurrentUserEmail;
-
     /* Listen to users change in firebase-remember to detach it */
     private ChildEventListener mListenerUsers;
-
     /* Listen for user presence */
     private ValueEventListener mConnectedListener;
-
     /* List holding user key */
     private List<String> mUsersKeyList;
 
@@ -152,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                     //Log.e(TAG, "A new user was inserted");
 
                     String userUid = dataSnapshot.getKey();
+                    userIdToTickStore = userUid;
 
                     if (!userUid.equals(mCurrentUserUid)) {
 
@@ -333,6 +326,10 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.action_logout) {
             logout();
             return true;
+        } else if (item.getItemId() == R.id.action_store) {
+            Intent intent = new Intent(MainActivity.this, TickStore.class);
+            intent.putExtra("EXTRA_SESSION_ID", userIdToTickStore);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

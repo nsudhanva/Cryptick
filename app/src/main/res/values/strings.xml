@@ -42,4 +42,6 @@
 
     <string name="no_tick">Sorry you are out of ticks!</string>
     <string name="buy_tick">Buy ticks from the Store</string>
+    <string name="buy_ticks">Select number of ticks to buy</string>s
+    <string name="are_you_sure">Are you sure you want to buy?</string>
 </resources>

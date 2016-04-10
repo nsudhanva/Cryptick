@@ -1,6 +1,7 @@
 package sudhanva.narayana.cryptick.adapter;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import sudhanva.narayana.cryptick.ChatActivity;
 import sudhanva.narayana.cryptick.R;
+import sudhanva.narayana.cryptick.TickStore;
 import sudhanva.narayana.cryptick.model.MessageChatModel;
 import sudhanva.narayana.cryptick.utils.Constants;
 
@@ -136,7 +138,15 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 builder.setPositiveButton(R.string.buy, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         Log.i("onClick", "Buy button clicked");
+                                        Intent intent = new Intent(new ContextThemeWrapper(
+                                                ChatActivity.getContext(), R.style.AppTheme
+                                        ), TickStore.class);
 
+                                        intent.putExtra("EXTRA_SESSION_ID", recipientFireMessage.getRecipient());
+
+                                        new ContextThemeWrapper(
+                                                ChatActivity.getContext(), R.style.AppTheme
+                                        ).startActivity(intent);
                                     }
                                 });
                                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -155,7 +165,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 ));
 
                                 // 2. Chain together various setter methods to set the dialog characteristics
-                                builder.setMessage(R.string.tick_dialog_message + String.valueOf(tickVal))
+                                builder.setMessage(R.string.tick_dialog_message)
                                         .setTitle(R.string.tick_dialog);
 
                                 // Add the buttons
